@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     require: true,
@@ -10,8 +10,9 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
+    minlength: 8,
     require: true,
   },
 });
 
-export const User = mongoose.Model(("User", userSchema));
+export const User = mongoose.model("User", userSchema);
