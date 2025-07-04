@@ -101,6 +101,7 @@ export const login = async (req, res) => {
       id: existedUser._id,
       name: existedUser.name,
       email: existedUser.email,
+      role: existedUser.role,
     });
   } catch (err) {
     console.log(err);
