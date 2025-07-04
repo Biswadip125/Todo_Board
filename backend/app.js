@@ -10,7 +10,7 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/auth", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello from Server");
