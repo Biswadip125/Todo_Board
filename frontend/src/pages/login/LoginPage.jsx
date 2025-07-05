@@ -1,13 +1,48 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styleSheets/loginpage.css";
 import { useState } from "react";
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/slices/authSlice";
 
-  const handleSubmit = (e) => {
+const LoginPage = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/auth/login",
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { message, success, ...usersData } = res.data;
+      if (success) {
+        toast.success(message);
+        dispatch(loginSuccess(usersData));
+        navigate("/");
+        setUser({ email: "", password: "" });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="container">
@@ -22,8 +57,8 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="Enter your Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
             </div>
             <div className="input-div">
@@ -31,15 +66,15 @@ const LoginPage = () => {
               <input
                 type="Password"
                 placeholder="Enter your Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
             </div>
             <Link to={"/signup"} className="link">
               Don't have an account ? Signup
             </Link>
-            <button className="submit-btn" type="submit">
-              Submit
+            <button className="submit-btn" type="submit" disabled={loading}>
+              {loading ? <>Please Wait</> : "Submit"}
             </button>
           </form>
         </div>

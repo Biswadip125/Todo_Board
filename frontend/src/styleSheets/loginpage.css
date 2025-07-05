@@ -34,7 +34,7 @@ form {
   gap: 10px;
 }
 .input-div label {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
 }
 .input-div input {
@@ -62,7 +62,10 @@ form {
   transition: all 0.3s;
   cursor: pointer;
 }
-
+.submit-btn:disabled {
+  opacity: 10;
+  background: #6e9eeb;
+}
 .submit-btn:hover {
   transform: scale(1.05);
 }
