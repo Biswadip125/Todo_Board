@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Types } from "mongoose";
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const taskSchema = new mongoose.Schema(
       required: true,
     },
     assignedUser: {
-      type: Mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
     status: {

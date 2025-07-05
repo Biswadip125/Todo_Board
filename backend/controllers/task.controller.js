@@ -1,0 +1,233 @@
+import mongoose, { mongo } from "mongoose";
+import { Task } from "../models/task.model.js";
+import { User } from "../models/user.model.js";
+
+export const createTask = async (req, res) => {
+  const { title, description, assignedUser } = req.body;
+
+  if (!title || !description || !assignedUser) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
+  }
+
+  try {
+    //checking the task is already exist or not
+    const existedTask = await Task.findOne({ title });
+
+    if (existedTask) {
+      return res.status(400).json({
+        success: false,
+        message: "Task with this title already exists ",
+      });
+    }
+
+    //checking the userid is a valid id or not
+    if (!mongoose.Types.ObjectId.isValid(assignedUser)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID format",
+      });
+    }
+
+    //checking the user is actually exist or not
+    const userExisted = await User.findById(assignedUser);
+
+    if (!userExisted) {
+      return res.status(400).json({
+        success: false,
+        message: "Assigned User not found ",
+      });
+    }
+
+    //invalid titles
+    const invalidTitles = ["todo", "in progress", "done"];
+
+    //checking if the title is valid or not
+    if (invalidTitles.includes(title.toLowerCase())) {
+      return res.status(400).json({
+        success: false,
+        message: "Task title can not be 'Todo', 'In Progress' or 'Done' ",
+      });
+    }
+
+    // creating a new Task
+    const newTask = await Task.create({
+      title,
+      description,
+      assignedUser,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Task Created Successfully",
+      newTask,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find().populate("assignedUser", "name email");
+
+    return res.status(200).json({
+      success: true,
+      tasks,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error ",
+    });
+  }
+};
+
+export const updateTask = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, assignedUser, priority, status } = req.body;
+
+  const updates = {};
+
+  if (title !== undefined) updates.title = title;
+  if (description !== undefined) updates.description = description;
+  if (assignedUser !== undefined) updates.assignedUser = assignedUser;
+  if (priority !== undefined) updates.priority = priority;
+  if (status !== undefined) updates.status = status;
+
+  if (Object.keys(updates).length === 0) {
+    return res
+      .status(400)
+      .json({ success: false, message: "One field is required for update" });
+  }
+
+  try {
+    //checking the task id is valid or not
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Task ID",
+      });
+    }
+
+    const existedTask = await Task.findById(id);
+    if (!existedTask) {
+      return res.status(400).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    // checking for invalid titles
+    const invalidTitles = ["todo", "in progress", "done"];
+    if (updates.title && invalidTitles.includes(updates.title.toLowerCase())) {
+      return res.status(400).json({
+        success: false,
+        message: "task Title can not be 'Todo', 'In Progress' or 'Done",
+      });
+    }
+
+    //checking for duplicate Title
+    if (updates.title) {
+      const duplicate = await Task.findOne({
+        title: updates.title,
+        _id: { $ne: id },
+      });
+      if (duplicate) {
+        return res.status(400).json({
+          success: false,
+          message: "Another Task with this title already exists",
+        });
+      }
+    }
+
+    //checking assignedUserID is valid or not
+    if (
+      updates.assignedUser &&
+      !mongoose.Types.ObjectId.isValid(updates.assignedUser)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid assigned User ID format",
+      });
+    }
+
+    //checking assignedUser is actually a user or not
+    if (updates.assignedUser) {
+      const user = await User.findById(assignedUser);
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: "Assigned User not found",
+        });
+      }
+    }
+
+    //updating the task
+    const updatedTask = await Task.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedTask) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Task Updated Successfully",
+      task: updatedTask,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error ",
+    });
+  }
+};
+
+export const deleteTask = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    //checking the id is valid or not
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Task ID Format is not valid ",
+      });
+    }
+
+    //deleting the task
+    const deletedTask = await Task.findByIdAndDelete(id);
+
+    if (!deletedTask) {
+      return res.status(400).json({
+        success: false,
+        message: "Task ID not Found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Task Deleted Successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error ",
+    });
+  }
+};
