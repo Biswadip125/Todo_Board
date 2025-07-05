@@ -3,6 +3,7 @@ import { connectDB } from "./config/dbConfig.js";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import taskRouter from "./routes/task.route.js";
+import actionLogRouter from "./routes/actionLog.route.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 //routes
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/tasks", taskRouter);
+app.use("/api/v1/action-logs", actionLogRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello from Server");

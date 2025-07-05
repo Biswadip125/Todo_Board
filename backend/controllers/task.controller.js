@@ -1,6 +1,8 @@
 import mongoose, { mongo } from "mongoose";
 import { Task } from "../models/task.model.js";
 import { User } from "../models/user.model.js";
+import { logTaskUpdate } from "../utils/logTaskUpdates.js";
+import { ActionLog } from "../models/actionLog.model.js";
 
 export const createTask = async (req, res) => {
   const { title, description, assignedUser } = req.body;
@@ -58,6 +60,18 @@ export const createTask = async (req, res) => {
       description,
       assignedUser,
     });
+
+    //creating an action log
+    if (newTask) {
+      const assignedToUser = await User.findById(assignedUser);
+
+      await ActionLog.create({
+        user: req.user._id,
+        task: newTask._id,
+        action: "assign",
+        description: `${req.user.name} assigned the task to ${assignedToUser.name}`,
+      });
+    }
 
     return res.status(201).json({
       success: true,
@@ -183,6 +197,14 @@ export const updateTask = async (req, res) => {
       });
     }
 
+    //creating a action log
+    await logTaskUpdate({
+      userId: req.user._id,
+      userName: req.user.name,
+      task: existedTask,
+      updates: updates,
+    });
+
     return res.status(200).json({
       success: true,
       message: "Task Updated Successfully",
@@ -218,6 +240,16 @@ export const deleteTask = async (req, res) => {
         message: "Task ID not Found",
       });
     }
+
+    //creating an action log
+    const assignedToUser = await User.findById(assignedToUser);
+
+    await ActionLog.create({
+      user: req.user._id,
+      task: id,
+      action: "delete",
+      description: `${req.user.name} delete the task which is assigned to ${assignedToUser.name}`,
+    });
 
     return res.status(200).json({
       success: true,

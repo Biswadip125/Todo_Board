@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
-export const isAuthenticated = (req, res, next) => {
+export const isAuthenticated = async (req, res, next) => {
   try {
     //checkng token is available or not
     const token = req.cookies.token;
@@ -25,7 +25,7 @@ export const isAuthenticated = (req, res, next) => {
     }
 
     //checking the user is exist or not
-    const user = User.findById(decode.userId).select("-password");
+    const user = await User.findById(decode.userId).select("-password");
 
     if (!user) {
       return res
