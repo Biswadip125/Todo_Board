@@ -8,6 +8,7 @@ import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/Signup";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import { useSelector } from "react-redux";
+import DnDWrapperDashboard from "./components/DnDWrapperDashboard";
 
 function App() {
   const isAuthenticated = useSelector((store) => store.auth.isAuthenticated);
@@ -20,7 +21,11 @@ function App() {
           <Route
             path="/"
             element={
-              isAuthenticated ? <DashboardPage /> : <Navigate to="/login" />
+              isAuthenticated ? (
+                <DnDWrapperDashboard />
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
         </Routes>

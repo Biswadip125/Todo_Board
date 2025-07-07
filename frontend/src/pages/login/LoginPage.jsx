@@ -56,6 +56,7 @@ const LoginPage = () => {
               <label>Email</label>
               <input
                 type="email"
+                required={true}
                 placeholder="Enter your Email"
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -65,6 +66,7 @@ const LoginPage = () => {
               <label>Password</label>
               <input
                 type="Password"
+                required={true}
                 placeholder="Enter your Password"
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
