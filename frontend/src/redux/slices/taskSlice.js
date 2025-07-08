@@ -9,13 +9,14 @@ const taskSlice = createSlice({
   initialState,
   reducers: {
     setTasks: (state, action) => {
-      if (action.payload) {
+      if (typeof action.payload === "function") {
+        state.tasks = action.payload(state.tasks);
+      } else {
         state.tasks = action.payload;
       }
     },
     updateTaskStatusInStore: (state, action) => {
       const { id, status } = action.payload;
-
       const task = state.tasks.find((task) => task._id === id);
       if (task) task.status = status;
     },

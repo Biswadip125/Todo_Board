@@ -28,7 +28,12 @@ function App() {
               )
             }
           />
-          <Route path="/assign-task" element={<AssignTask />} />
+          <Route
+            path="/assign-task"
+            element={
+              isAuthenticated ? <AssignTask /> : <Navigate to="/login" />
+            }
+          />
         </Routes>
       </div>
     </Router>

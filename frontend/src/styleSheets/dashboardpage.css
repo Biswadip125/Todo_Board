@@ -68,16 +68,24 @@
 
 .kanban-column {
   background-color: #f5f5f5;
-  padding: 15px;
+  padding: 18px;
   border-radius: 10px;
   width: 400px;
-  min-height: 400px;
+  max-height: 540px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 .kanban-column h2 {
   text-align: center;
   margin-bottom: 15px;
+}
+
+.kanban-column::-webkit-scrollbar {
+  width: 6px;
+}
+.kanban-column::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
 }
 .kanban-tasks {
   display: flex;

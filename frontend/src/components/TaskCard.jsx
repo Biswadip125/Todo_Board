@@ -1,5 +1,6 @@
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../types/ItemTypes";
+import { useSelector } from "react-redux";
 
 const TaskCard = ({ task }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -15,6 +16,7 @@ const TaskCard = ({ task }) => {
     2: "Intermediate",
     3: "Low",
   };
+  const authUser = useSelector((store) => store.auth.user);
   return (
     <div
       className="kanban-task"
@@ -41,9 +43,14 @@ const TaskCard = ({ task }) => {
           {priorityMap[task?.priority]}
         </div>
       </div>
-      <p className="kanban-task-description">{task.description}</p>
+      <p className="kanban-task-description">{task?.description}</p>
       <div className="kanban-task-content">
-        <p>assigned To : {task.assignedUser.name}</p>
+        <p>
+          assigned To :{" "}
+          {task?.assignedUser?._id === authUser.id
+            ? "you"
+            : task.assignedUser.name}
+        </p>
       </div>
     </div>
   );

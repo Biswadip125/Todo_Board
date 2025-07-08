@@ -7,12 +7,15 @@ import { setTasks } from "../../redux/slices/taskSlice";
 import toast from "react-hot-toast";
 import KanbanColumn from "../../components/KanbanColumn";
 import { Link } from "react-router-dom";
+import { useSocketContext } from "../../context/SocketContext";
+import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 
 const DashboardPage = () => {
   const { user } = useSelector((store) => store.auth);
   const tasks = useSelector((store) => store.task.tasks);
   const dispatch = useDispatch();
-
+  const { socket } = useSocketContext();
+  useGetOtherUsers();
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -52,6 +55,16 @@ const DashboardPage = () => {
       toast.error(err.response.data.message);
     }
   };
+  useEffect(() => {
+    socket?.on("taskCreated", (task) => {
+      console.log("task appeared");
+      dispatch(setTasks((prevState) => [...prevState, task]));
+    });
+
+    return () => {
+      socket?.off("taskCreated");
+    };
+  }, [socket, dispatch, tasks]);
 
   const todoTasks = tasks?.filter((task) => task?.status === "Todo");
   const inProgressTasks = tasks?.filter(

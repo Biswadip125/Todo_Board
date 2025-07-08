@@ -1,17 +1,15 @@
 import { useSelector } from "react-redux";
-import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 import "../../styleSheets/assigntaskpage.css";
 import { useState } from "react";
 import useAssignTask from "../../hooks/useAssignTask";
 const AssignTask = () => {
-  useGetOtherUsers();
   const otherUsers = useSelector((store) => store.auth.otherUsers);
   const { loading, assignTask } = useAssignTask();
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
     priority: 3,
-    assignedUser: otherUsers[0]._id,
+    assignedUser: otherUsers[0]?._id,
   });
 
   const handleSubmit = async (e) => {
