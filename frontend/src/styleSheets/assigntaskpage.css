@@ -1,0 +1,69 @@
+.assign-task-container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  flex-direction: column;
+  width: 1280px;
+  height: 100vh;
+  margin: 0 auto;
+}
+.assign-task-container h2 {
+  align-self: flex-start;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.assign-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+}
+.form-group label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form-group input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+  font-size: 18px;
+}
+.form-group textarea {
+  padding: 10px;
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid black;
+  resize: vertical;
+}
+.form-group select {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-size: 18px;
+}
+.form-group select option {
+  background-color: white;
+  color: black;
+  font-size: 16px;
+}
+.assign-task-submit-btn {
+  width: 30%;
+  background: #4a89ee;
+  color: #fff;
+  padding: 14px 10px;
+  border-radius: 20px;
+  border: none;
+  transition: all 0.3s;
+  cursor: pointer;
+}

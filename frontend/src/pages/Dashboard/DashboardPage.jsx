@@ -6,6 +6,8 @@ import axios from "axios";
 import { setTasks } from "../../redux/slices/taskSlice";
 import toast from "react-hot-toast";
 import KanbanColumn from "../../components/KanbanColumn";
+import { Link } from "react-router-dom";
+
 const DashboardPage = () => {
   const { user } = useSelector((store) => store.auth);
   const tasks = useSelector((store) => store.task.tasks);
@@ -50,34 +52,28 @@ const DashboardPage = () => {
       toast.error(err.response.data.message);
     }
   };
-  const updateTaskStatus = useCallback(
-    (updatedTask, id) => {
-      const updatedTasks = tasks?.map((task) =>
-        task._id === id ? updatedTask : task
-      );
 
-      dispatch(setTasks(updatedTasks));
-    },
-    [tasks, dispatch]
-  );
-
-  const todoTasks = tasks?.filter((task) => task.status === "Todo");
+  const todoTasks = tasks?.filter((task) => task?.status === "Todo");
   const inProgressTasks = tasks?.filter(
-    (task) => task.status === "In Progress"
+    (task) => task?.status === "In Progress"
   );
-  const completedTasks = tasks?.filter((task) => task.status === "Done");
+  const completedTasks = tasks?.filter((task) => task?.status === "Done");
+
   return (
     <div className="container">
       <Header />
-      <h1 className="heading">Welcome {user.name}, 🖐️</h1>
+      <div className="dashboard-header">
+        <h1 className="heading">Welcome {user.name}, 🖐️</h1>
+        <Link to={"/assign-task"}>
+          <button>Assign Task</button>
+        </Link>
+      </div>
       <div className="kanban-board">
         {["Todo", "In Progress", "Done"].map((status) => (
           <KanbanColumn
             key={status}
             status={status}
             onDropTask={onDropTask}
-            updateTaskStatus={updateTaskStatus}
-            fetchTasks={fetchTasks}
             tasks={
               status === "Todo"
                 ? todoTasks

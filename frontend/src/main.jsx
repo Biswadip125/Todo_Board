@@ -5,9 +5,12 @@ import App from "./App.jsx";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
+import { SocketContextProvider } from "./context/SocketContext.jsx";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <Toaster position="bottom-right" />
-    <App />
+    <SocketContextProvider>
+      <Toaster position="bottom-right" />
+      <App />
+    </SocketContextProvider>
   </Provider>
 );

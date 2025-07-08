@@ -6,15 +6,15 @@ import {
 } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/Signup";
-import DashboardPage from "./pages/Dashboard/DashboardPage";
 import { useSelector } from "react-redux";
 import DnDWrapperDashboard from "./components/DnDWrapperDashboard";
+import AssignTask from "./pages/AssignTask/AssignTask";
 
 function App() {
   const isAuthenticated = useSelector((store) => store.auth.isAuthenticated);
   return (
     <Router>
-      <div className="container">
+      <div className="">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<Signup />} />
@@ -28,6 +28,7 @@ function App() {
               )
             }
           />
+          <Route path="/assign-task" element={<AssignTask />} />
         </Routes>
       </div>
     </Router>
