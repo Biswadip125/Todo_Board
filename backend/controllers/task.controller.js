@@ -3,6 +3,7 @@ import { Task } from "../models/task.model.js";
 import { User } from "../models/user.model.js";
 import { logTaskUpdate } from "../utils/logTaskUpdates.js";
 import { ActionLog } from "../models/actionLog.model.js";
+import { io, usersocketMap } from "../socket/socket.js";
 
 export const createTask = async (req, res) => {
   const { title, description, assignedUser, priority } = req.body;
@@ -71,6 +72,17 @@ export const createTask = async (req, res) => {
         action: "assign",
         description: `${req.user.name} assigned the task to ${assignedToUser.name}`,
       });
+
+      //emitting and event that a new task is assigned
+      const populatedTask = await Task.findById(newTask._id).populate(
+        "assignedUser",
+        "name"
+      );
+      Object.entries(usersocketMap).map(([userId, socketId]) => {
+        if (userId !== req.user._id) {
+          io.to(socketId).emit("taskCreated", populatedTask);
+        }
+      });
     }
 
     return res.status(201).json({
@@ -89,7 +101,7 @@ export const createTask = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find().populate("assignedUser", "name email");
+    const tasks = await Task.find().populate("assignedUser", "name");
 
     return res.status(200).json({
       success: true,
