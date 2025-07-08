@@ -5,8 +5,7 @@ import { logTaskUpdate } from "../utils/logTaskUpdates.js";
 import { ActionLog } from "../models/actionLog.model.js";
 
 export const createTask = async (req, res) => {
-  const { title, description, assignedUser } = req.body;
-
+  const { title, description, assignedUser, priority } = req.body;
   if (!title || !description || !assignedUser) {
     return res.status(400).json({
       success: false,
@@ -59,6 +58,7 @@ export const createTask = async (req, res) => {
       title,
       description,
       assignedUser,
+      priority,
     });
 
     //creating an action log
