@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import Header from "../../components/Header";
 import "../../styleSheets/dashboardpage.css";
 import { useCallback, useEffect } from "react";
 import axios from "axios";
@@ -92,7 +91,6 @@ const DashboardPage = () => {
 
   return (
     <div className="container">
-      <Header />
       <div className="dashboard-header">
         <h1 className="heading">Welcome {user.name}, 🖐️</h1>
         <Link to={"/assign-task"}>

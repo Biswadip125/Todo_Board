@@ -10,9 +10,12 @@ import { useSelector } from "react-redux";
 import DnDWrapperDashboard from "./components/DnDWrapperDashboard";
 import AssignTask from "./pages/AssignTask/AssignTask";
 import TaskModificationPage from "./pages/TaskModificationPage/TaskModificationPage";
+import Header from "./components/Header";
+import ActionLog from "./pages/ActionLog/ActionLog";
 
 function App() {
   const isAuthenticated = useSelector((store) => store.auth.isAuthenticated);
+
   return (
     <Router>
       <div className="">
@@ -23,7 +26,10 @@ function App() {
             path="/"
             element={
               isAuthenticated ? (
-                <DnDWrapperDashboard />
+                <>
+                  <Header />
+                  <DnDWrapperDashboard />
+                </>
               ) : (
                 <Navigate to="/login" />
               )
@@ -32,17 +38,34 @@ function App() {
           <Route
             path="/assign-task"
             element={
-              isAuthenticated ? <AssignTask /> : <Navigate to="/login" />
+              isAuthenticated ? (
+                <>
+                  <Header /> <AssignTask />
+                </>
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
           <Route
             path="/edit/:id"
             element={
               isAuthenticated ? (
-                <TaskModificationPage />
+                <>
+                  <Header />
+                  <TaskModificationPage />
+                </>
               ) : (
                 <Navigate to="/login" />
               )
+            }
+          />
+          <Route
+            path="/logs"
+            element={
+              <>
+                <Header /> <ActionLog />
+              </>
             }
           />
         </Routes>

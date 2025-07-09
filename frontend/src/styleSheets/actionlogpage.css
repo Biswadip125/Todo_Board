@@ -1,0 +1,53 @@
+.action-log-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  background-color: #f9fafb;
+  min-height: calc(100vh - 64px); /* Adjust based on your header height */
+  box-sizing: border-box;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+.action-log-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.action-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.action-log-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  text-transform: capitalize;
+}
+
+.action-log-timestamp {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.action-log-description {
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.action-log-meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+.action-log-meta span {
+  font-weight: 500;
+  color: #374151;
+}

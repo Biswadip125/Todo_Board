@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import axios from "axios";
 import { BACKEND_API_URL } from "../utils/constant";
@@ -23,6 +23,17 @@ const Header = () => {
   return (
     <div className="header">
       <h1>Todo Board</h1>
+      <div className="nav-links">
+        <NavLink to="/" className="nav-link">
+          Home
+        </NavLink>
+        <NavLink to="/assign-task" className="nav-link">
+          Assign Task
+        </NavLink>
+        <NavLink to="/logs" className="nav-link">
+          Action Logs
+        </NavLink>
+      </div>
       <Link className="logout-link">
         <>
           <LogOut color="black" onClick={handleLogout} />
