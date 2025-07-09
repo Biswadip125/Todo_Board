@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setOtherUsers } from "../redux/slices/authSlice";
+import { BACKEND_API_URL } from "../utils/constant";
 
 const useGetOtherUsers = () => {
   const dispatch = useDispatch();
@@ -9,7 +10,7 @@ const useGetOtherUsers = () => {
   useEffect(() => {
     const fetchOtherUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/v1/users", {
+        const res = await axios.get(`${BACKEND_API_URL}/users`, {
           withCredentials: true,
         });
         if (res.data.success) {

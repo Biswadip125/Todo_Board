@@ -290,7 +290,7 @@ export const deleteTask = async (req, res) => {
     }
 
     //creating an action log
-    const assignedToUser = await User.findById(assignedToUser);
+    const assignedToUser = await User.findById(deletedTask.assignedUser);
 
     await ActionLog.create({
       user: req.user._id,

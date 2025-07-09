@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setTasks } from "../redux/slices/taskSlice";
+import { BACKEND_API_URL } from "../utils/constant";
 
 const useUpdateTask = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ const useUpdateTask = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/v1/tasks/${id}`,
+        `${BACKEND_API_URL}/tasks/${id}`,
         updatedTaskData,
         {
           headers: {

@@ -3,6 +3,7 @@ import "../../styleSheets/signuppage.css";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BACKEND_API_URL } from "../../utils/constant";
 const Signup = () => {
   const [user, setUser] = useState({
     name: "",
@@ -16,16 +17,12 @@ const Signup = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/register",
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`${BACKEND_API_URL}/auth/register`, user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/login");

@@ -3,6 +3,7 @@ import { ItemTypes } from "../types/ItemTypes";
 import { useSelector } from "react-redux";
 import { Delete, PenBoxIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
+import useDeleteTask from "../hooks/useDeleteTask";
 
 const TaskCard = ({ task }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -19,6 +20,7 @@ const TaskCard = ({ task }) => {
     3: "Low",
   };
   const authUser = useSelector((store) => store.auth.user);
+  const { deleteTask } = useDeleteTask();
   return (
     <div
       className="kanban-task"
@@ -60,7 +62,13 @@ const TaskCard = ({ task }) => {
           >
             <PenBoxIcon size={18} color="blue" />
           </Link>
-          <Trash2Icon size={18} color="red" style={{ cursor: "pointer" }} />
+
+          <Trash2Icon
+            size={18}
+            color="red"
+            style={{ cursor: "pointer" }}
+            onClick={() => deleteTask(task?._id)}
+          />
         </div>
       </div>
     </div>

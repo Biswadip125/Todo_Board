@@ -9,6 +9,7 @@ import KanbanColumn from "../../components/KanbanColumn";
 import { Link } from "react-router-dom";
 import { useSocketContext } from "../../context/SocketContext";
 import useGetOtherUsers from "../../hooks/useGetOtherUsers";
+import { BACKEND_API_URL } from "../../utils/constant";
 
 const DashboardPage = () => {
   const { user } = useSelector((store) => store.auth);
@@ -23,7 +24,7 @@ const DashboardPage = () => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/v1/tasks", {
+      const res = await axios.get(`${BACKEND_API_URL}/tasks`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -38,7 +39,7 @@ const DashboardPage = () => {
   const onDropTask = async (id, status) => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/v1/tasks/${id}`,
+        `${BACKEND_API_URL}/tasks/${id}`,
         { status },
         {
           headers: {

@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
+import { BACKEND_API_URL } from "../../utils/constant";
 
 const LoginPage = () => {
   const [user, setUser] = useState({
@@ -19,16 +20,12 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/auth/login",
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`${BACKEND_API_URL}/auth/login`, user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
 
       const { message, success, ...usersData } = res.data;
       if (success) {
