@@ -1,6 +1,8 @@
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../types/ItemTypes";
 import { useSelector } from "react-redux";
+import { Delete, PenBoxIcon, Trash2Icon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TaskCard = ({ task }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -51,6 +53,15 @@ const TaskCard = ({ task }) => {
             ? "you"
             : task.assignedUser.name}
         </p>
+        <div className="kanban-task-modify-icons">
+          <Link
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+            to={`/edit/${task._id}`}
+          >
+            <PenBoxIcon size={18} color="blue" />
+          </Link>
+          <Trash2Icon size={18} color="red" style={{ cursor: "pointer" }} />
+        </div>
       </div>
     </div>
   );

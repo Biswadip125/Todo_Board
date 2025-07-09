@@ -16,6 +16,7 @@ const DashboardPage = () => {
   const dispatch = useDispatch();
   const { socket } = useSocketContext();
   useGetOtherUsers();
+
   useEffect(() => {
     fetchTasks();
   }, []);

@@ -138,3 +138,10 @@
   color: white;
   font-weight: bold;
 }
+
+.kanban-task-modify-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}

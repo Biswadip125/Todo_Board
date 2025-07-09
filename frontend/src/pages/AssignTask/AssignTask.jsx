@@ -33,7 +33,7 @@ const AssignTask = () => {
             required
             value={taskData.title}
             onChange={(e) =>
-              setTaskData({ ...taskData, title: e.target.value })
+              setTaskData((prev) => ({ ...prev, title: e.target.value }))
             }
           />
         </div>
@@ -45,7 +45,7 @@ const AssignTask = () => {
             value={taskData.description}
             required
             onChange={(e) =>
-              setTaskData({ ...taskData, description: e.target.value })
+              setTaskData((prev) => ({ ...prev, description: e.target.value }))
             }
           />
         </div>

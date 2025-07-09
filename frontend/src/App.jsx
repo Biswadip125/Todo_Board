@@ -9,6 +9,7 @@ import Signup from "./pages/signup/Signup";
 import { useSelector } from "react-redux";
 import DnDWrapperDashboard from "./components/DnDWrapperDashboard";
 import AssignTask from "./pages/AssignTask/AssignTask";
+import TaskModificationPage from "./pages/TaskModificationPage/TaskModificationPage";
 
 function App() {
   const isAuthenticated = useSelector((store) => store.auth.isAuthenticated);
@@ -32,6 +33,16 @@ function App() {
             path="/assign-task"
             element={
               isAuthenticated ? <AssignTask /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              isAuthenticated ? (
+                <TaskModificationPage />
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
         </Routes>

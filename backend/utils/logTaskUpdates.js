@@ -1,4 +1,5 @@
 import { ActionLog } from "../models/actionLog.model.js";
+import { User } from "../models/user.model.js";
 
 export const logTaskUpdate = async ({
   userId,
