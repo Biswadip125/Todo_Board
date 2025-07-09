@@ -31,9 +31,15 @@ const KanbanColumn = ({ status, tasks, onDropTask }) => {
     >
       <h2>{status}</h2>
       <div className="kanban-tasks">
-        {tasks?.map((task) => (
-          <TaskCard task={task} key={task._id} />
-        ))}
+        {tasks.length > 0 ? (
+          tasks?.map((task) => <TaskCard task={task} key={task._id} />)
+        ) : (
+          <p
+            style={{ textAlign: "center", marginTop: "10px", fontSize: "18px" }}
+          >
+            No Tasks yet
+          </p>
+        )}
       </div>
     </div>
   );
