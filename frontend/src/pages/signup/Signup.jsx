@@ -41,7 +41,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="container">
+    <div className="signup-container">
       <div>
         <div className="signup-div">
           <h1>
