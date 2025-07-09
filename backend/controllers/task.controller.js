@@ -7,13 +7,14 @@ import { io, usersocketMap } from "../socket/socket.js";
 
 export const createTask = async (req, res) => {
   const { title, description, assignedUser, priority } = req.body;
-  if (!title || !description || !assignedUser) {
+  if (!title || !description || !assignedUser || !priority) {
     return res.status(400).json({
       success: false,
       message: "All fields are required",
     });
   }
 
+  let smartAssignedUser;
   try {
     //checking the task is already exist or not
     const existedTask = await Task.findOne({ title });
@@ -25,24 +26,44 @@ export const createTask = async (req, res) => {
       });
     }
 
-    //checking the userid is a valid id or not
-    if (!mongoose.Types.ObjectId.isValid(assignedUser)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid user ID format",
-      });
+    //checking if assignedUser is smart or not
+    if (assignedUser === "smart") {
+      const leastBusyUser = await Task.aggregate([
+        {
+          $group: {
+            _id: "$assignedUser",
+            taskCount: { $sum: 1 },
+          },
+        },
+        {
+          $sort: { taskCount: 1 },
+        },
+        {
+          $limit: 1,
+        },
+      ]);
+      smartAssignedUser = leastBusyUser[0]?._id;
     }
+    //manually checking for the user if it is not smart
+    else {
+      //checking the userid is a valid id or not
+      if (!mongoose.Types.ObjectId.isValid(assignedUser)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID format",
+        });
+      }
 
-    //checking the user is actually exist or not
-    const userExisted = await User.findById(assignedUser);
+      //checking the user is actually exist or not
+      const userExisted = await User.findById(assignedUser);
 
-    if (!userExisted) {
-      return res.status(400).json({
-        success: false,
-        message: "Assigned User not found ",
-      });
+      if (!userExisted) {
+        return res.status(400).json({
+          success: false,
+          message: "Assigned User not found ",
+        });
+      }
     }
-
     //invalid titles
     const invalidTitles = ["todo", "in progress", "done"];
 
@@ -54,17 +75,20 @@ export const createTask = async (req, res) => {
       });
     }
 
+    const finalAssignedUser =
+      assignedUser === "smart" ? smartAssignedUser : assignedUser;
+
     // creating a new Task
     const newTask = await Task.create({
       title,
       description,
-      assignedUser,
+      assignedUser: finalAssignedUser,
       priority,
     });
 
     //creating an action log
     if (newTask) {
-      const assignedToUser = await User.findById(assignedUser);
+      const assignedToUser = await User.findById(finalAssignedUser);
 
       await ActionLog.create({
         user: req.user._id,
@@ -206,6 +230,18 @@ export const updateTask = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Task not found",
+      });
+    }
+
+    if (updatedTask && updatedTask.status !== existedTask.status) {
+      const populatedTask = await Task.findById(updatedTask._id).populate(
+        "assignedUser",
+        "name"
+      );
+      Object.entries(usersocketMap).forEach(([userId, socketId]) => {
+        if (userId !== String(req.user._id)) {
+          io.to(socketId).emit("taskStatusUpdated", populatedTask);
+        }
       });
     }
 

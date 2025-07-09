@@ -66,6 +66,22 @@ const DashboardPage = () => {
     };
   }, [socket, dispatch, tasks]);
 
+  useEffect(() => {
+    socket?.on("taskStatusUpdated", (updatedTask) => {
+      console.log("task appeared");
+      dispatch(
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === updatedTask._id ? updatedTask : task
+          )
+        )
+      );
+    });
+    return () => {
+      socket?.off("taskStatusUpdated");
+    };
+  }, [socket, dispatch, tasks]);
+
   const todoTasks = tasks?.filter((task) => task?.status === "Todo");
   const inProgressTasks = tasks?.filter(
     (task) => task?.status === "In Progress"

@@ -16,7 +16,7 @@
 .assign-task-form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
 }
 
 .form-group {
@@ -57,6 +57,35 @@
   color: black;
   font-size: 16px;
 }
+
+.assignment-type-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  user-select: none;
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #4a89ee; /* Modern colored radio button */
+}
+
+.radio-option:hover {
+  background-color: #f3f4f6;
+  border-color: #4a89ee;
+}
+
 .assign-task-submit-btn {
   width: 30%;
   background: #4a89ee;
@@ -66,4 +95,12 @@
   border: none;
   transition: all 0.3s;
   cursor: pointer;
+}
+
+.assign-task-submit-btn:hover {
+  transform: scale(1.05);
+}
+
+.assign-task-submit-btn:disabled {
+  opacity: 50;
 }
