@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://todo-board-chi.vercel.app/",
+    origin: "https://todo-board-chi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
