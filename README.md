@@ -4,8 +4,8 @@ A full-stack task management application built with the **MERN stack** featuring
 
 ## 🚀 Live Demo
 
-- **Frontend**: [View on Vercel](https://your-frontend.vercel.app)
-- **Backend**: [Render API Endpoint](https://your-backend.onrender.com)
+- **Frontend**: [View on Vercel](https://todo-board-chi.vercel.app/)
+- **Backend**: [Render API Endpoint](https://todo-board-api.onrender.com)
 
 ---
 
@@ -45,20 +45,22 @@ A full-stack task management application built with the **MERN stack** featuring
 
 ## 📂 Folder Structure
 client/ # React frontend (Vite)
+```bash
 └── src/
 └── hooks/
 └── components/
 └── pages/
 └── store/
 └── utils/
-
+```
+```bash
 server/ # Node.js + Express backend
 └── controllers/
 └── models/
 └── routes/
 └── middlewares/
 └── config/
-
+````
 
 ---
 
@@ -71,10 +73,8 @@ Create `.env` files in both `client/` and `server/`.
 PORT=3000
 MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
-CLIENT_URL=https://https://todo-board-chi.vercel.app
 ````
-### `.env` (Frontend)
-VITE_BACKEND_URL=https://https://todo-board-api.onrender.com
+
 
 ## 📦 Installation
 
