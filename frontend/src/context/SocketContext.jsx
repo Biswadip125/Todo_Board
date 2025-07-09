@@ -18,8 +18,6 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser?.id) {
-      console.log("running");
-      console.log(authUser);
       const socket = io("http://localhost:3000", {
         query: {
           userId: authUser?.id,
