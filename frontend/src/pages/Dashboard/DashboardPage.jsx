@@ -58,7 +58,6 @@ const DashboardPage = () => {
   };
   useEffect(() => {
     socket?.on("taskCreated", (task) => {
-      console.log("task appeared");
       dispatch(setTasks((prevState) => [...prevState, task]));
     });
 
@@ -68,7 +67,7 @@ const DashboardPage = () => {
   }, [socket, dispatch, tasks]);
 
   useEffect(() => {
-    socket?.on("taskStatusUpdated", (updatedTask) => {
+    socket?.on("taskUpdated", (updatedTask) => {
       console.log("task appeared");
       dispatch(
         setTasks((prevTasks) =>
@@ -79,7 +78,7 @@ const DashboardPage = () => {
       );
     });
     return () => {
-      socket?.off("taskStatusUpdated");
+      socket?.off("taskUpdated");
     };
   }, [socket, dispatch, tasks]);
 

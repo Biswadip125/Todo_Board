@@ -233,14 +233,22 @@ export const updateTask = async (req, res) => {
       });
     }
 
-    if (updatedTask && updatedTask.status !== existedTask.status) {
+    const isTaskModified =
+      updateTask.title !== existedTask.title ||
+      updatedTask.description !== existedTask.description ||
+      updatedTask.priority !== existedTask.priority ||
+      updatedTask.status !== existedTask.status ||
+      updatedTask.assignedUser.toString() !==
+        existedTask.assignedUser.toString();
+
+    if (isTaskModified) {
       const populatedTask = await Task.findById(updatedTask._id).populate(
         "assignedUser",
         "name"
       );
       Object.entries(usersocketMap).forEach(([userId, socketId]) => {
         if (userId !== String(req.user._id)) {
-          io.to(socketId).emit("taskStatusUpdated", populatedTask);
+          io.to(socketId).emit("taskUpdated", populatedTask);
         }
       });
     }
