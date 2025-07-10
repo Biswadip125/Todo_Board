@@ -18,7 +18,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser?.id) {
-      const socket = io("http://localhost:3000", {
+      const socket = io("https://todo-board-api.onrender.com", {
         query: {
           userId: authUser?.id,
         },
