@@ -10,9 +10,12 @@ const useGetOtherUsers = () => {
   useEffect(() => {
     const fetchOtherUsers = async () => {
       try {
-        const res = await axios.get(`${BACKEND_API_URL}/users`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_API_URLL}/users`,
+          {
+            withCredentials: true,
+          }
+        );
         if (res.data.success) {
           dispatch(setOtherUsers(res.data.otherUsers));
         }

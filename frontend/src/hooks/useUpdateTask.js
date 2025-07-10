@@ -15,7 +15,7 @@ const useUpdateTask = () => {
     setLoading(true);
     try {
       const res = await axios.put(
-        `${BACKEND_API_URL}/tasks/${id}`,
+        `${import.meta.env.VITE_BACKEND_API_URL}/tasks/${id}`,
         updatedTaskData,
         {
           headers: {

@@ -10,9 +10,12 @@ const ActionLog = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const res = await axios.get(`${BACKEND_API_URL}/action-logs`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_API_URL}/action-logs`,
+          {
+            withCredentials: true,
+          }
+        );
         if (res.data.success) {
           setActionLogs(res.data.logs);
         }

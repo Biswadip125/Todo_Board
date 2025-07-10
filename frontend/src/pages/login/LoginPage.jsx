@@ -20,12 +20,16 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post(`${BACKEND_API_URL}/auth/login`, user, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/login`,
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
       const { message, success, ...usersData } = res.data;
       if (success) {

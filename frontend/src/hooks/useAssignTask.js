@@ -16,12 +16,16 @@ const useAssignTask = () => {
   const assignTask = async (task) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BACKEND_API_URL}/tasks/`, task, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_URL}/tasks/`,
+        task,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         dispatch(setTasks([...tasks, res.data.task]));
         toast.success(res.data.message);

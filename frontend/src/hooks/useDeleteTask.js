@@ -8,9 +8,12 @@ const useDeleteTask = () => {
 
   const deleteTask = async (id) => {
     try {
-      const res = await axios.delete(`${BACKEND_API_URL}/tasks/${id}`, {
-        withCredentials: true,
-      });
+      const res = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API_URL}/tasks/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (res.data.success) {
         dispatch(

@@ -23,9 +23,12 @@ const DashboardPage = () => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const res = await axios.get(`${BACKEND_API_URL}/tasks`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_URL}/tasks`,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         dispatch(setTasks(res.data.tasks));
       }
@@ -38,7 +41,7 @@ const DashboardPage = () => {
   const onDropTask = async (id, status) => {
     try {
       const res = await axios.put(
-        `${BACKEND_API_URL}/tasks/${id}`,
+        `${import.meta.env.VITE_BACKEND_API_URL}/tasks/${id}`,
         { status },
         {
           headers: {

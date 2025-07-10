@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import axios from "axios";
-import { BACKEND_API_URL } from "../utils/constant";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
@@ -9,7 +8,9 @@ const Header = () => {
   const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
-      const res = await axios.get(`${BACKEND_API_URL}/auth/logout`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/logout`
+      );
 
       if (res.data.success) {
         toast.success(res.data.message);
